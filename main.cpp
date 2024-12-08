@@ -223,6 +223,7 @@ public:
             for (auto &book : books) {
                 if (book.id == itemId) {
                     book.stock += newStock;
+                    cout << "Stock updated successfully..." << endl;
                     return;
                 }
             }
@@ -230,6 +231,7 @@ public:
             for (auto &magazine : magazines) {
                 if (magazine.id == itemId) {
                     magazine.stock += newStock;
+                    cout << "Stock updated successfully..." << endl;
                     return;
                 }
             }
@@ -243,7 +245,7 @@ public:
             if (book.name == bookName) {
                 cout << "      Bookshop Inventory Management System       " << endl;
                 cout << "-------------------------------------------------" << endl;
-                cout << "                 ---Book details---              " << endl;
+                cout << "                ---Book details---               " << endl;
                 if(book.newCollection){
                     cout << "                   NEW COLLECTION                " << endl;
                 }
@@ -274,6 +276,7 @@ public:
     }
 
     void displayAllBooks(bool isManager = false) {
+        clearScreen();
         cout << "      Bookshop Inventory Management System       " << endl;
         cout << "-------------------------------------------------" << endl;
         for (const auto &book : books) {
@@ -297,7 +300,7 @@ public:
     void displayBookByGenre(string genre) {
         cout << "      Bookshop Inventory Management System       " << endl;
         cout << "-------------------------------------------------" << endl;
-        cout << "             " << genre << " books" << endl;
+        cout << "          Books of genre " << genre << endl;
         bool found = false;
         for (const auto &book : books) {
             if (book.genre == genre) {
@@ -323,7 +326,7 @@ public:
     void displayBookByAuthor(string author) {
         cout << "      Bookshop Inventory Management System       " << endl;
         cout << "-------------------------------------------------" << endl;
-        cout << "           Books by " << author << endl;
+        cout << "            Books by Author " << author << endl;
         bool found = false;
         for (const auto &book : books) {
             if (book.author == author) {
@@ -348,7 +351,7 @@ public:
     void displayBookBySeries(string series) {
         cout << "      Bookshop Inventory Management System       " << endl;
         cout << "-------------------------------------------------" << endl;
-        cout << "  Books of the series " << series << endl;
+        cout << "      Books of the series " << series << endl;
         bool found = false;
         for (const auto &book : books) {
             if (book.series == series) {
@@ -438,7 +441,7 @@ public:
                 cout << "             Year: " << magazine.pubYear << endl;
                 cout << "             Price: " << magazine.price << endl;
                 if(magazine.stock > 0 ){
-                    cout << "                  Magazine available                 " << endl;
+                    cout << "               Magazine available                 " << endl;
                 }else{
                     cout << "      Out of stock. Try contacting the staff...  " << endl;
                 }
@@ -456,10 +459,10 @@ public:
         cout << "-------------------------------------------------" << endl;
         for (const auto &magazine : magazines) {
             if(magazine.newCollection){
-                cout << "                   NEW COLLECTION                " << endl;
+                cout << "                  NEW COLLECTION                 " << endl;
             }
             if(magazine.isMonthly){
-                cout << "                  MONTHLY MAGAZINE               " << endl;
+                cout << "                 MONTHLY MAGAZINE                " << endl;
             }
             cout << "             Title: " << magazine.title << endl;
             cout << "             Genre: " << magazine.genre << endl;
@@ -475,7 +478,7 @@ public:
     void displayMagazineByGenre(string genre) {
         cout << "      Bookshop Inventory Management System       " << endl;
         cout << "-------------------------------------------------" << endl;
-        cout << "             " << genre << " magazines" << endl;
+        cout << "                " << genre << " magazines" << endl;
         bool found = false;
         for (const auto &magazine : magazines) {
             if (magazine.genre == genre) {
@@ -490,6 +493,9 @@ public:
                 cout << "             Publisher: " << magazine.publisher << endl;
                 cout << "-------------------------------------------------" << endl;
             }
+        }
+        if(!found){
+            cout << "Sorry, the magazines of genre \"" << genre << "\" are not available here." << endl;
         }
     }
 
@@ -841,6 +847,15 @@ class Users {
             return nullptr;
         }
 
+        Customer* getCustomerByName(const string& customerName) {
+            for (auto& customer : customers) {
+                if (customer.name == customerName) {
+                    return &customer; 
+                }
+            }  
+            return nullptr;
+        }
+
         Cashier* getCashierById(int cashierId) {
             for (auto& cashier : cashiers) {
                 if (cashier.id == cashierId) {
@@ -874,10 +889,12 @@ class Users {
         }
 
         void displayCustomerDetails(Customer* customer) {
-            cout << "       ---Customer Details---       " << endl;
-            cout << "       Customer ID: " << customer->id << endl;
-            cout << "       Name: " << customer->name << endl;
-            cout << "       Phone Number: " << customer->phNo << endl;
+            cout << "      Bookshop Inventory Management System       " << endl;
+            cout << "-------------------------------------------------" << endl;
+            cout << "             ---Customer Details---       " << endl;
+            cout << "            Customer ID: " << customer->id << endl;
+            cout << "            Name: " << customer->name << endl;
+            cout << "            Phone Number: " << customer->phNo << endl;
             if((customer->booksPurchased).size() != 0){   
                 cout << "      Books Purchased:\n";
                 for (const auto& book : customer->booksPurchased) {
@@ -889,11 +906,13 @@ class Users {
         }
 
         void displayPurchases(Customer* customer){
-            cout << "       ---Purchase history---       " << endl;
+            cout << "      Bookshop Inventory Management System       " << endl;
+            cout << "-------------------------------------------------" << endl;
+            cout << "               ---Purchase history---       " << endl;
             if((customer->booksPurchased).size() != 0){   
-                cout << "      Books Purchased:\n";
+                cout << "             Books Purchased:\n";
                 for (const auto& book : customer->booksPurchased) {
-                    cout << "- " << book << endl;
+                    cout << "       - " << book << endl;
                 }
             }else{
                 cout << "       No books purchased..." << endl;
@@ -1129,7 +1148,7 @@ void aboutStore(Users &users, Inventory &inventory, Manager &manager){
     cout << " Welcome to Bookshop Inventory Management System " << endl;
     cout << "-------------------------------------------------" << endl;
     cout << "                    Store Details                " << endl;
-    cout << "             Store name: " << endl;
+    cout << "             Store name: " << "Shelf of Tales" << endl;
     cout << "             Manager name: " <<  manager.name << endl;
     cout << "             Manager contact: " << manager.phNo << endl;
     cout << "             Total Cashiers: " << users.getTotalCashiers() << endl;
@@ -1957,6 +1976,7 @@ int main(){
 
                                             case 2: {
                                                 // display customers
+                                                clearScreen();
                                                 users.displayCustomers();
                                                 cout << endl << "Press any key to continue...";
                                                 cin.ignore();
@@ -1970,53 +1990,60 @@ int main(){
                                                 clearScreen();
                                                 bool pm = true;
                                                 Transaction transaction;
-                                                cout << "Enter customer ID: " << endl;
-                                                long long curCustID;
-                                                cin >> curCustID;
+                                                cout << "Enter customer name: " << endl;
+                                                string curCustomerName;
+                                                cin.ignore();
+                                                getline(cin, curCustomerName);
 
-                                                Customer *curCustomer = users.getCustomerById(curCustID);
+                                                Customer *curCustomer = users.getCustomerByName(curCustomerName);
 
-                                                do{
-                                                    m.purchaseMenu();
-                                                    int purchaseChoice;
-                                                    cin >> purchaseChoice;
+                                                if(curCustomer != nullptr){
+                                                    do{
+                                                        m.purchaseMenu();
+                                                        int purchaseChoice;
+                                                        cin >> purchaseChoice;
 
-                                                    switch(purchaseChoice){
-                                                        case 1: {
-                                                            // add item to billing
-                                                            clearScreen();
-                                                            addItem(curCustomer, inventory, transaction);
-                                                            wait();
-                                                            wait();
-                                                            clearScreen();
-                                                            break;
+                                                        switch(purchaseChoice){
+                                                            case 1: {
+                                                                // add item to billing
+                                                                clearScreen();
+                                                                addItem(curCustomer, inventory, transaction);
+                                                                wait();
+                                                                wait();
+                                                                clearScreen();
+                                                                break;
+                                                            }
+
+                                                            case 2: {
+                                                                //generate receipt
+                                                                clearScreen();
+                                                                cout << "Generating receipt..." << endl;
+                                                                wait();
+                                                                clearScreen();
+
+                                                                transaction.generateReceipt();
+
+                                                                pm = false;
+                                                                cout << endl << "Press any key to continue...";
+                                                                cin.ignore();
+                                                                cin.get();
+                                                                clearScreen();
+                                                                break;
+                                                            }
+                                                            
+                                                            default: {
+                                                                cout << "Invalid number entered. Please try again..." << endl;
+                                                                wait();
+                                                                clearScreen();
+                                                                break;
+                                                            }
                                                         }
-
-                                                        case 2: {
-                                                            //generate receipt
-                                                            clearScreen();
-                                                            cout << "Generating receipt..." << endl;
-                                                            wait();
-                                                            clearScreen();
-
-                                                            transaction.generateReceipt();
-
-                                                            pm = false;
-                                                            cout << endl << "Press any key to continue...";
-                                                            cin.ignore();
-                                                            cin.get();
-                                                            clearScreen();
-                                                            break;
-                                                        }
-                                                        
-                                                        default: {
-                                                            cout << "Invalid number entered. Please try again..." << endl;
-                                                            wait();
-                                                            clearScreen();
-                                                            break;
-                                                        }
-                                                    }
-                                                } while(pm);
+                                                    } while(pm);
+                                                }else{
+                                                    cout << "Customer not found..." << endl;
+                                                    wait();
+                                                    clearScreen();
+                                                }    
                                                 break;
                                             }
 
